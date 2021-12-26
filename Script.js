@@ -106,7 +106,7 @@ document.querySelectorAll('.grid-item').forEach(item => {
         var sel_id = item.id;
         //console.log(selected + ' before push');
         if (selected.indexOf(sel_id) == -1){
-            item.style.backgroundColor = "red";
+            item.style.backgroundColor = "#DB4437";
             selected.push(sel_id);
         }
         else if (toPush.indexOf(sel_id) == -1 && selected.indexOf(sel_id) != -1){
@@ -122,7 +122,7 @@ document.querySelectorAll('.grid-item').forEach(item => {
 
 function reset(){
     document.querySelectorAll('.grid-item').forEach(item => {
-            item.style.backgroundColor = "aqua";
+            item.style.backgroundColor = "";
             selected = [];
             intersected=[];
             newselected =[];
@@ -130,7 +130,7 @@ function reset(){
             neighbouring = [];
             ind_neighbouring = [];
             intersected =[];
-            console.clear();
+            console.clear(); 
       })
 }
 
@@ -140,7 +140,7 @@ function enable(){
 
 function disable(id){
     console.log("disable -> id", id)
-    document.getElementById(id).style.backgroundColor = 'aqua';
+    document.getElementById(id).style.backgroundColor = '';
     console.log('color changes here');
 }
 

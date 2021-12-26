@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script>
 
         
@@ -8,37 +10,134 @@
      
         
     </script>
+
     <style>
+        .container{
+            display: grid;
+            align-items: center;
+            /* width: 50%; */
+            grid-template-columns: 45% 2% 53%;
+            /* margin-left: 25%; */
+            
+        }
+        .intro{
+            display: grid;
+            grid-template-rows: 40% 60%;
+            height: 100%;
+        }
+        h1{
+            font-family: 'Montserrat';
+            text-align: center;
+            margin-left: 7%;
+            font-weight: 700;
+            margin: 0;
+        }
+        h2{
+            font-family: 'Montserrat';
+            align-self: center;
+            margin-left: 7%;
+            font-weight: 600;
+            font-size: 14px;
+            text-align: center;
+        }
+        .text{
+            font-family: 'Montserrat';
+            align-self: center;
+            margin-left: 7%;
+            font-weight: 600;
+            font-size: 14px;
+            text-align: center;
+        }
+        .list{
+            text-align: left;
+        }
+        li{
+            margin-bottom: 5px;
+        }
+        p{
+            display: flex !important;
+            text-align: left  !important ;
+        }
+        .here {
+        color: #DB4437;
+        text-decoration: none;
+        
+        }
+        .fa {
+        /* padding: 10px;
+        font-size: 20px;
+        width: 20px;
+        text-align: center;
+        text-decoration: none;
+        /* margin: 5px 2px; */
+        /* border-radius: 50%; */
+        }
+        .links{
+            text-align: center;
+        }
+        .fa-linkedin {
+        /* background: #007bb5; */
+        color: #007bb5;
+        }
+        .fa-github {
+        
+        color: black;
+        }
+        a{
+            text-decoration: none;
+        }
+        .fa:hover {
+            opacity: 0.7;
+        }
+
+        .game{
+            margin-left: 15%;
+            margin-top: 20px;
+        }
         .grid-container {
           display: grid;
           width: 500px;
           height: 500px;
           grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
-          background-color: #2196F3;
+          background-color:#ffff;
           padding: 10px;
-          margin-left: 25%;
+          /* margin-left: 25%; */
         }
         .grid-item {
-          
-          background-color: aqua;
-          border: 1px solid rgba(0, 0, 0, 0.8);
+          background-color: #ffff;
           padding: 5px;
           height : 10px;
           width : 10px;
           text-align: center;
+          box-shadow: 2px 2px 10px grey;
+          
+        }
+        .grid-item:hover{
+            background-color:  #F4B400 ;
+        }
+        .btn-container{
+            width: 500px;
+            /* margin-left: 25%; */
+            display: grid;
+            grid-template-columns: auto auto ;
         }
         .btn{
-            padding : 5px;
+            display: inline;
+            padding : 10px;
             border-radius: 20px;
-            width: 200px;
-            margin-left :50%;
-            margin-bottom: 50%;
-            position: absolute;
+            width: 150px;
+            margin-left :25%;
+            background-color: #4285F4 !important;
+            border: none;
+            box-shadow: 1px 1px 15px grey;
+            color: blanchedalmond;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: 'Montserrat'
         }
-
-        .grid-item:active{
-          background-color: rgba(18, 221, 109, 0.8);
-            
+        .vl {
+        border-right: 2px solid grey;
+        height: 100%;
         }
         </style>
     <meta charset="UTF-8">
@@ -47,14 +146,44 @@
     <title>GameOfLife</title>
 </head>
 <body>
-    <div class="grid-container" id="grid-container">
+    <div class="container">
+        <div class="into">
+            <div>
+                <h1>Conway's Game of Life</h1>
+                <h2>Rana Shahzaib</h2>
+                <br>
+            </div>
+            <div class="text">
+                <p>This is a fairly simple implementation of Conway's Game of Life. It works on 3 ground rules: </p>
+                <ul class="list">
+                    <li>Any live cell with two or three live neighbours survives.</li>
+                    <li>Any dead cell with three live neighbours becomes a live cell.</li>
+                    <li>All other live cells die in the next generation. Similarly, all other dead cells stay dead.</li>
+                </ul>
+                <p>Complete code is written in HTML / JS and can be found &nbsp;<a class="here"href="https://github.com/shahzaib3120/GameOfLife" >here.</a></p>
+            </div>
+            <div class="links">
+                <a href="#" class="fa fa-linkedin fa-3x"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="#" class="fa fa-github fa-3x"></a> 
+            </div>
+            
+        </div>
+        <div class="vl"></div>
+        <div class="game">
+            <div class="grid-container" id="grid-container">
+            </div>
+            <br>
+            <div class="btn-container">
+                <button onclick="reset()" class='btn'>Reset</button>
         
-      </div>
-      <br>
-
-        <button onclick="reset()" class='btn'>Reset</button>
-        <br> <br>
-        <button onclick="Evolve()" class='btn' >Evolve</button>
+            <button onclick="Evolve()" class='btn' >Evolve</button>
+            </div>
+        </div>
+        
+    </div>
+    <!-- <h1>Conway's Game Of Life</h1>
+    <h3>Rana Shahzaib</h3> -->
+    
       <script type="text/javascript" src="Script.js"></script>
 </body>
 </html>
