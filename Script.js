@@ -1,3 +1,5 @@
+var autoEvolve = true;
+
 function create(){
     var count =1;
     var incremental =0;
@@ -106,6 +108,8 @@ document.querySelectorAll('.grid-item').forEach(item => {
         var sel_id = item.id;
         //console.log(selected + ' before push');
         if (selected.indexOf(sel_id) == -1){
+            item.style.backgroundColor = "rgb(255,255,255)";
+            // changeColor([219, 68, 55], sel_id);
             item.style.backgroundColor = "#DB4437";
             selected.push(sel_id);
         }
@@ -138,151 +142,190 @@ function enable(){
 
 }
 
+
+function getrgbarray(string){
+    var rgb = string.substring(4, string.length-1)
+            .replace(/ /g, '')
+            .split(',');
+    return rgb;
+}
+
+function changeColor(endcolor, id){
+    var element = document.getElementById(id);
+    var startcolor = getrgbarray(element.style.backgroundColor);
+    console.log(startcolor);
+    var steps = 10;
+    var red_change = (startcolor[0] - endcolor[0]) / steps;
+    var green_change = (startcolor[1] - endcolor[1]) / steps;
+    var blue_change = (startcolor[2] - endcolor[2]) / steps;
+
+    var currentcolor = startcolor;
+    var stepcount = 0;
+    var timer = setInterval(function(){
+        currentcolor[0] = parseInt(currentcolor[0] - red_change);
+        currentcolor[1] = parseInt(currentcolor[1] - green_change);
+        currentcolor[2] = parseInt(currentcolor[2] - blue_change);
+        element.style.backgroundColor = 'rgb(' + currentcolor.toString() + ')';
+        stepcount += 1;
+        if (stepcount >= steps) {
+            element.style.backgroundColor = 'rgb(' + endcolor.toString() + ')';
+            clearInterval(timer);
+        }
+    }, 50);
+}
+
 function disable(id){
     console.log("disable -> id", id)
     document.getElementById(id).style.backgroundColor = '';
+    // changeColor([255,255,255], id);
+    // $("#"+id).fadeOut();
     console.log('color changes here');
 }
 
+
+
 function Evolve(){
-     
+    selected.sort();
+    console.log(selected);
+    len = selected.length;
+    var neighbouring = []
+    var ind_neighbouring =[]
+    for(x=0 ; x<len ; x++ ) {
+        
+        console.log(x);
+    
+        var x_id = document.getElementById(selected[x]).id ;
+        //r_id = parseInt(x_id) + 1;
+        //console.log(r_id);
+        var right = document.getElementById(parseInt(x_id) + 1) ;
+        var left = document.getElementById(parseInt(x_id) -1);
+        var down = document.getElementById(parseInt(x_id) +20);
+        var up = document.getElementById(parseInt(x_id) -20);
+        var upright = document.getElementById(parseInt(x_id) -19);
+        var upleft = document.getElementById(parseInt(x_id) -21);
+        var downleft = document.getElementById(parseInt(x_id) +19);
+        var downright = document.getElementById(parseInt(x_id) +21);
+
+        //console.log(right.id + "," + left.id + "," + up.id + "," + down.id + "," + upright.id + "," + upleft.id + "," + downright.id + "," + downleft.id ) ;
+        neighbouring = [ ...neighbouring, right.id ,  left.id  ,  up.id  ,  down.id  ,  upright.id  ,  upleft.id  ,  downright.id , downleft.id ]
+        //ind_neighbouring = [ ...ind_neighbouring, right.id ,  left.id  ,  up.id  ,  down.id  ,  upright.id  ,  upleft.id  ,  downright.id , downleft.id ]
+        ind_neighbouring = [ right.id ,  left.id  ,  up.id  ,  down.id  ,  upright.id  ,  upleft.id  ,  downright.id , downleft.id ]
+        
+        ind_neighbouring.sort();
         selected.sort();
+
+        console.log('before intersection');
+        console.log(ind_neighbouring);
         console.log(selected);
-        len = selected.length;
-        var neighbouring = []
-        var ind_neighbouring =[]
-        for(x=0 ; x<len ; x++ ) {
-            
-            console.log(x);
-        
-            var x_id = document.getElementById(selected[x]).id ;
-            //r_id = parseInt(x_id) + 1;
-            //console.log(r_id);
-            var right = document.getElementById(parseInt(x_id) + 1) ;
-            var left = document.getElementById(parseInt(x_id) -1);
-            var down = document.getElementById(parseInt(x_id) +20);
-            var up = document.getElementById(parseInt(x_id) -20);
-            var upright = document.getElementById(parseInt(x_id) -19);
-            var upleft = document.getElementById(parseInt(x_id) -21);
-            var downleft = document.getElementById(parseInt(x_id) +19);
-            var downright = document.getElementById(parseInt(x_id) +21);
-
-            //console.log(right.id + "," + left.id + "," + up.id + "," + down.id + "," + upright.id + "," + upleft.id + "," + downright.id + "," + downleft.id ) ;
-            neighbouring = [ ...neighbouring, right.id ,  left.id  ,  up.id  ,  down.id  ,  upright.id  ,  upleft.id  ,  downright.id , downleft.id ]
-            //ind_neighbouring = [ ...ind_neighbouring, right.id ,  left.id  ,  up.id  ,  down.id  ,  upright.id  ,  upleft.id  ,  downright.id , downleft.id ]
-            ind_neighbouring = [ right.id ,  left.id  ,  up.id  ,  down.id  ,  upright.id  ,  upleft.id  ,  downright.id , downleft.id ]
-            
-            ind_neighbouring.sort();
-            selected.sort();
-
-            console.log('before intersection');
-            console.log(ind_neighbouring);
-            console.log(selected);
 
 
-            intersection(ind_neighbouring,selected,ind_neighbouring.length,selected.length);
+        intersection(ind_neighbouring,selected,ind_neighbouring.length,selected.length);
 
-            if(intersected.length == 0){
-            //neighbouring = [ ...neighbouring, x_id, right.id ,  left.id  ,  up.id  ,  down.id  ,  upright.id  ,  upleft.id  ,  downright.id , downleft.id ]
-            ind_neighbouring = [ ...ind_neighbouring, x_id];
-            console.log("zero inter ", ind_neighbouring);
-
-            }
-            else{               
-            console.log( x_id + "  " +  ind_neighbouring);
-            }
-
-            console.log( "totall " + neighbouring );
-
-            //console.log(left.id);
-            //console.log(down.id);
-            //console.log(up.id);
-            //console.log(upright.id);
-            //console.log(upleft.id);
-            //console.log(downleft.id);
-            //console.log(downright.id);
-            if(x==0){
-            var newselected = selected;
-            }
-            console.log(intersected.length);
-            if( intersected.length <=1 ){
-                disable(x_id)
-                newselected = newselected.filter((ob)=>{ return ob != selected[x] })
-                console.log("newselected", newselected)
-            }
-            if (intersected.length >= 4){
-                disable(x_id)
-                newselected = newselected.filter((ob)=>{ return ob != selected[x] })
-                console.log("newselected", newselected);
-            }
-            
-            
+        if(intersected.length == 0){
+        //neighbouring = [ ...neighbouring, x_id, right.id ,  left.id  ,  up.id  ,  down.id  ,  upright.id  ,  upleft.id  ,  downright.id , downleft.id ]
+        ind_neighbouring = [ ...ind_neighbouring, x_id];
+        console.log("zero inter ", ind_neighbouring);
 
         }
-
-        console.log("newselected", newselected)
-        selected = newselected;
-        console.log(selected + ' after loop');
-
-
-        
-
-        var itemcount = {}
-        neighbouring.forEach((obj)=>{
-            itemcount[obj] = (itemcount[obj] || 0)+1
-        })
-        var newitemcount = {}
-
-        console.log("itemcount", itemcount);
-        var newitemcount = Object.fromEntries(Object.entries(itemcount).filter(([key, value])=>{return value == 3}));
-        console.log("newitemcount", newitemcount);
-        // var newselected = selected
-        // for (obj in selected){
-        //     if (itemcount[selected[obj]] <= 1){
-        //         // delete from list
-        //         disable(selected[obj])
-        //         newselected = newselected.filter((ob)=>{ return ob != selected[obj] })
-        //         console.log("newselected", newselected)
-
-        //     }
-        //     if (itemcount[selected[obj]] >= 4){
-        //         // delete from list
-        //         disable(selected[obj])
-        //         newselected = newselected.filter((ob)=>{ return ob != selected[obj] })
-        //         console.log("newselected", newselected)
-        //     }
-        // }
-
-        
-        for( obj in newitemcount){
-            toPush.push(obj);
+        else{               
+        console.log( x_id + "  " +  ind_neighbouring);
         }
 
-        // for (obj in selected){
-        //     if (itemcount[selected[obj]] <= 1){
-        //        // delete from list
-        //          disable(selected[obj])
-        //          newselected = newselected.filter((ob)=>{ return ob != selected[obj] })
-        //          console.log("newselected", newselected)
+        console.log( "totall " + neighbouring );
 
-        //    }
-        //     if (itemcount[selected[obj]] >= 4){
-        //         // delete from list
-        //          disable(selected[obj])
-        //       newselected = newselected.filter((ob)=>{ return ob != selected[obj] })
-        //          console.log("newselected", newselected)
-        //     }
-        // }
-        
-        getUnion(toPush,toPush.length,selected,selected.length);
-        console.log(toPush);
-        selected = [];
-        for (x=0; x< toPush.length ; x++){
-            //console.log(document.getElementById(parseInt(toPush[x])));
-            document.getElementById(parseInt(toPush[x])).click();
+        //console.log(left.id);
+        //console.log(down.id);
+        //console.log(up.id);
+        //console.log(upright.id);
+        //console.log(upleft.id);
+        //console.log(downleft.id);
+        //console.log(downright.id);
+        if(x==0){
+        var newselected = selected;
         }
-        console.log("selected", selected)
-        toPush = [];
-        wait(100);
-       
+        console.log(intersected.length);
+        if( intersected.length <=1 ){
+            disable(x_id)
+            newselected = newselected.filter((ob)=>{ return ob != selected[x] })
+            console.log("newselected", newselected)
+        }
+        if (intersected.length >= 4){
+            disable(x_id)
+            newselected = newselected.filter((ob)=>{ return ob != selected[x] })
+            console.log("newselected", newselected);
+        }
+        
+        
+
+    }
+
+    console.log("newselected", newselected)
+    selected = newselected;
+    console.log(selected + ' after loop');
+
+
+    
+
+    var itemcount = {}
+    neighbouring.forEach((obj)=>{
+        itemcount[obj] = (itemcount[obj] || 0)+1
+    })
+    var newitemcount = {}
+
+    console.log("itemcount", itemcount);
+    var newitemcount = Object.fromEntries(Object.entries(itemcount).filter(([key, value])=>{return value == 3}));
+    console.log("newitemcount", newitemcount);
+    // var newselected = selected
+    // for (obj in selected){
+    //     if (itemcount[selected[obj]] <= 1){
+    //         // delete from list
+    //         disable(selected[obj])
+    //         newselected = newselected.filter((ob)=>{ return ob != selected[obj] })
+    //         console.log("newselected", newselected)
+
+    //     }
+    //     if (itemcount[selected[obj]] >= 4){
+    //         // delete from list
+    //         disable(selected[obj])
+    //         newselected = newselected.filter((ob)=>{ return ob != selected[obj] })
+    //         console.log("newselected", newselected)
+    //     }
+    // }
+
+    
+    for( obj in newitemcount){
+        toPush.push(obj);
+    }
+
+    // for (obj in selected){
+    //     if (itemcount[selected[obj]] <= 1){
+    //        // delete from list
+    //          disable(selected[obj])
+    //          newselected = newselected.filter((ob)=>{ return ob != selected[obj] })
+    //          console.log("newselected", newselected)
+
+    //    }
+    //     if (itemcount[selected[obj]] >= 4){
+    //         // delete from list
+    //          disable(selected[obj])
+    //       newselected = newselected.filter((ob)=>{ return ob != selected[obj] })
+    //          console.log("newselected", newselected)
+    //     }
+    // }
+    
+    getUnion(toPush,toPush.length,selected,selected.length);
+    console.log(toPush);
+    selected = [];
+    for (x=0; x< toPush.length ; x++){
+        //console.log(document.getElementById(parseInt(toPush[x])));
+        document.getElementById(parseInt(toPush[x])).click();
+    }
+    console.log("selected", selected)
+    toPush = [];
+    wait(150);
+    if(autoEvolve == true){
+        requestAnimationFrame(Evolve);
+    }
 }   
+
+
